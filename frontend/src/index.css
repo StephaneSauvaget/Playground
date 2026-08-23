@@ -1,0 +1,39 @@
+:root {
+  color-scheme: light;
+  font: 16px/1.4 "Poppins", system-ui, "Segoe UI", Roboto, sans-serif;
+
+  /* "Bubblegum" theme tokens (adapted from tweakcn/21st.dev's bubblegum theme, softened) */
+  --bg-start: #f173b0;
+  --bg-end: #9cd6d8;
+  --card: #fdedc9;
+  --card-foreground: #5b5b5b;
+  --primary: #d86fab;
+  --primary-foreground: #ffffff;
+  --secondary: #9cd6d8;
+  --secondary-foreground: #234046;
+  --accent: #fbe2a7;
+  --accent-foreground: #5b3a00;
+  --destructive: #fa898a;
+  --destructive-foreground: #ffffff;
+  --success: #6cc29a;
+  --success-foreground: #ffffff;
+  --border: #d561a3;
+  --shadow-color: #be5991;
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+}
+
+#root {
+  min-height: 100svh;
+}

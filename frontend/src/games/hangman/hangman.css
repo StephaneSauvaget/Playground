@@ -1,0 +1,315 @@
+.hangman-game {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 20px;
+}
+
+.back-home-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 3px 3px 0 0 var(--shadow-color);
+  z-index: 20;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.back-home-link:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 var(--shadow-color);
+}
+
+.back-home-link:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 var(--shadow-color);
+}
+
+.hangman-game .container {
+  position: relative;
+  width: 850px;
+  max-width: 100%;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  box-shadow: 6px 6px 0 0 var(--shadow-color);
+}
+
+.top-right-controls {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.used-letters {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 180px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1.5px solid var(--secondary);
+  border-radius: var(--radius-sm);
+}
+
+.used-letters-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--secondary-foreground);
+  text-transform: uppercase;
+}
+
+.used-letters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.used-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.used-letter.correct {
+  background: var(--success);
+}
+
+.used-letter.wrong {
+  background: var(--destructive);
+}
+
+.hint-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  box-shadow: 2px 2px 0 0 var(--shadow-color);
+  transition: transform 0.1s ease;
+}
+
+.hint-button:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  transform: translate(-1px, -1px);
+}
+
+.hint-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  max-width: 60vw;
+  padding: 10px 14px;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  box-shadow: 3px 3px 0 0 var(--shadow-color);
+  z-index: 10;
+}
+
+.hangman-figure {
+  width: 200px;
+  height: 180px;
+  color: var(--card-foreground);
+}
+
+.hangman-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hangman-box h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-top: 10px;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.game-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 280px;
+}
+
+.word-display {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.word-display .letter {
+  width: 26px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  border-bottom: 4px solid var(--primary);
+}
+
+.word-display .letter.guessed {
+  border-color: transparent;
+}
+
+.hint-text,
+.guesses-text {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+.guesses-text b {
+  color: var(--destructive);
+}
+
+.keyboard {
+  display: flex;
+  gap: 6px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.keyboard button {
+  padding: 10px 14px;
+  min-width: 40px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 var(--shadow-color);
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.keyboard button:hover:not([disabled]) {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 var(--shadow-color);
+}
+
+.keyboard button:active:not([disabled]) {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 var(--shadow-color);
+}
+
+.keyboard button[disabled] {
+  opacity: 0.45;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.game-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.game-modal .content {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: 6px 6px 0 0 var(--shadow-color);
+}
+
+.game-modal .content b {
+  color: var(--primary);
+}
+
+.game-modal h4 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.game-modal .play-again {
+  margin-top: 20px;
+  padding: 14px 28px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 var(--shadow-color);
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.game-modal .play-again:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 var(--shadow-color);
+}
+
+.game-modal .play-again:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 var(--shadow-color);
+}
+
+.rules-content p {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.error {
+  color: var(--destructive);
+  font-weight: 600;
+}
