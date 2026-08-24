@@ -6,7 +6,6 @@ import { HintButton } from "./HintButton";
 import { Keyboard } from "./Keyboard";
 import { MistakeDots } from "./MistakeDots";
 import { RulesModal } from "./RulesModal";
-import { UsedLetters } from "./UsedLetters";
 import { WordDisplay } from "./WordDisplay";
 import { useRules } from "../../mascot/useRules";
 import { useHangmanRound } from "./useHangmanRound";
@@ -48,7 +47,6 @@ export function Hangman() {
       </div>
       <div className="container">
         <div className="top-right-controls">
-          <UsedLetters guessedLetters={round.guessedLetters} display={round.display} />
           <HintButton key={round.roundId} hint={round.hint} />
         </div>
         <div className="hangman-box">

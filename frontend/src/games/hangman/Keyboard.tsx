@@ -16,8 +16,8 @@ export function Keyboard({ guessedLetters, display, disabled, onGuess }: Keyboar
   return (
     <div className="keyboard">
       {LETTERS.map((letter) => {
-        // A tried key keeps its answer on it, so the child reads the board
-        // instead of cross-checking the used-letters panel.
+        // A tried key keeps its answer on it: the child reads the result where
+        // their eyes already are, on the key they just pressed.
         const status = !guessed.has(letter) ? "" : found.has(letter) ? " correct" : " wrong";
 
         return (

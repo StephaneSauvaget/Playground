@@ -73,52 +73,6 @@
   gap: 10px;
 }
 
-.used-letters {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  max-width: 180px;
-  padding: 8px 10px;
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-}
-
-.used-letters-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--secondary-foreground);
-  text-transform: uppercase;
-}
-
-.used-letters-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.used-letter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.used-letter.correct {
-  background: var(--success);
-}
-
-.used-letter.wrong {
-  background: var(--destructive);
-}
-
 .hint-button {
   width: 34px;
   height: 34px;
@@ -236,13 +190,6 @@
 
 .word-display .letter.guessed {
   border-color: transparent;
-}
-
-.hint-text {
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 16px;
 }
 
 .mistake-dots {
@@ -391,12 +338,6 @@
 .game-modal .play-again:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 0 var(--shadow-color);
-}
-
-.rules-content p {
-  font-size: 1.15rem;
-  font-weight: 500;
-  line-height: 1.5;
 }
 
 .error {
