@@ -5,3 +5,6 @@ dist-ssr
 .DS_Store
 
 .claude/settings.local.json
+
+# Sortie régénérable de design/Clomo/decoupe.mjs
+design/Clomo/detoure/
