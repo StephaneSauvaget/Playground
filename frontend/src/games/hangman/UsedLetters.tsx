@@ -1,5 +1,5 @@
 import { useI18n } from "../../i18n/I18nContext";
-import { stripAccents } from "./normalize";
+import { foundLetterSet } from "./letterStatus";
 
 interface UsedLettersProps {
   guessedLetters: string[];
@@ -11,7 +11,7 @@ export function UsedLetters({ guessedLetters, display }: UsedLettersProps) {
 
   if (guessedLetters.length === 0) return null;
 
-  const foundLetters = new Set(display.filter((letter) => letter !== null).map(stripAccents));
+  const foundLetters = foundLetterSet(display);
 
   return (
     <div className="used-letters">

@@ -4,6 +4,7 @@ import { GameOverModal } from "./GameOverModal";
 import { HangmanFigure } from "./HangmanFigure";
 import { HintButton } from "./HintButton";
 import { Keyboard } from "./Keyboard";
+import { MistakeDots } from "./MistakeDots";
 import { RulesModal } from "./RulesModal";
 import { UsedLetters } from "./UsedLetters";
 import { WordDisplay } from "./WordDisplay";
@@ -56,11 +57,13 @@ export function Hangman() {
         </div>
         <div className="game-box">
           <WordDisplay display={round.display} />
-          <h4 className="guesses-text">
-            {t("hangman.incorrectGuesses")}: <b>{round.wrongGuesses} / {round.maxWrongGuesses}</b>
-          </h4>
+          <MistakeDots
+            wrongGuesses={round.wrongGuesses}
+            maxWrongGuesses={round.maxWrongGuesses}
+          />
           <Keyboard
             guessedLetters={round.guessedLetters}
+            display={round.display}
             disabled={round.status !== "in_progress"}
             onGuess={guess}
           />

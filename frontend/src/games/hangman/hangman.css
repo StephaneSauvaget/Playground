@@ -238,16 +238,41 @@
   border-color: transparent;
 }
 
-.hint-text,
-.guesses-text {
+.hint-text {
   text-align: center;
   font-size: 1rem;
   font-weight: 600;
   margin-top: 16px;
 }
 
-.guesses-text b {
-  color: var(--destructive);
+.mistake-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.mistake-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--card);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.mistake-dot.used {
+  background: var(--destructive);
+  border-color: var(--destructive);
+  transform: scale(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mistake-dot {
+    transition: none;
+  }
 }
 
 .keyboard {
@@ -289,6 +314,23 @@
   opacity: 0.45;
   pointer-events: none;
   box-shadow: none;
+}
+
+/* Attribute + class beats the [disabled] washout on specificity alone, so
+   these stay readable wherever they sit in the file. */
+.keyboard button[disabled].correct,
+.keyboard button[disabled].wrong {
+  opacity: 1;
+  color: #fff;
+  border-color: var(--border);
+}
+
+.keyboard button[disabled].correct {
+  background: var(--success);
+}
+
+.keyboard button[disabled].wrong {
+  background: var(--destructive);
 }
 
 .game-modal {
