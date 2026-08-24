@@ -100,6 +100,24 @@ Adding a second game: give it its own `POST /api/games/<game>/rounds`-shaped API
 /shared     Shared TypeScript types/interfaces used by both (not yet created — add when duplication actually hurts)
 ```
 
+## Git workflow
+
+Three levels, adopted 2026-08-25:
+
+- **`main`** — releases only. Never commit to it directly, and never merge a feature into it. It receives `develop` when a version is cut.
+- **`develop`** — the integration branch and **the default target for everything**. Branch from it, merge back into it.
+- **feature branches** — one per piece of work, branched from `develop`, merged back with `git merge --no-ff` so the branch stays visible in the history.
+
+```bash
+git checkout develop && git checkout -b <feature>
+# ... work, commit ...
+git checkout develop && git merge --no-ff <feature>
+```
+
+So: when asked to commit, branch off `develop` rather than committing on the spot, and merge into `develop`, not `main`. `main` moves only on an explicit release.
+
+The remote is `https://github.com/StephaneSauvaget/Playground.git` and was still empty as of 2026-08-25 — nothing has ever been pushed. Ask before the first push rather than pushing as part of another task.
+
 ## Commands
 
 Frontend (run from `/frontend`):
