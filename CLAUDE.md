@@ -106,17 +106,20 @@ Three levels, adopted 2026-08-25:
 
 - **`main`** — releases only. Never commit to it directly, and never merge a feature into it. It receives `develop` when a version is cut.
 - **`develop`** — the integration branch and **the default target for everything**. Branch from it, merge back into it.
-- **feature branches** — one per piece of work, branched from `develop`, merged back with `git merge --no-ff` so the branch stays visible in the history.
+- **feature branches** — one per piece of work, branched from `develop`, merged back with `git merge --no-ff` so the branch stays visible in the history, then **deleted**. Use `git branch -d` (lowercase), never `-D`: the safe form refuses to delete a branch that is not fully merged, which is exactly the check you want here.
 
 ```bash
 git checkout develop && git checkout -b <feature>
 # ... work, commit ...
 git checkout develop && git merge --no-ff <feature>
+git branch -d <feature>
 ```
 
 So: when asked to commit, branch off `develop` rather than committing on the spot, and merge into `develop`, not `main`. `main` moves only on an explicit release.
 
-The remote is `https://github.com/StephaneSauvaget/Playground.git` and was still empty as of 2026-08-25 — nothing has ever been pushed. Ask before the first push rather than pushing as part of another task.
+The author has said Claude can run git commands directly (2026-08-25) — branch, commit, merge and delete without asking each time.
+
+The remote is `https://github.com/StephaneSauvaget/Playground.git`. It is a **public** repository and was still empty as of 2026-08-25 — nothing has ever been pushed. Pushing therefore publishes everything in the history to the open internet, including `design/Clomo/` and this file. Confirm before a push that would publish new material; it is not covered by the blanket permission above.
 
 ## Commands
 
