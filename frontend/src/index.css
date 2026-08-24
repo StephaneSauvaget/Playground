@@ -2,23 +2,25 @@
   color-scheme: light;
   font: 16px/1.4 "Poppins", system-ui, "Segoe UI", Roboto, sans-serif;
 
-  /* "Bubblegum" theme tokens (adapted from tweakcn/21st.dev's bubblegum theme, softened) */
-  --bg-start: #f173b0;
-  --bg-end: #9cd6d8;
-  --card: #fdedc9;
-  --card-foreground: #5b5b5b;
-  --primary: #d86fab;
-  --primary-foreground: #ffffff;
-  --secondary: #9cd6d8;
-  --secondary-foreground: #234046;
-  --accent: #fbe2a7;
-  --accent-foreground: #5b3a00;
-  --destructive: #fa898a;
+  /* "Clomo" theme tokens (adapted from the "Ninja" theme on 21st.dev, warmed for the fox mascot) */
+  --bg-start: #fdfbf7;
+  --bg-end: #e0d6c9;
+  --card: #ffffff;
+  --card-foreground: #3e2723;
+  --primary: #fcb960;
+  --primary-foreground: #3e2723;
+  /* --primary as a surface is too pale to read as text: use --primary-strong for text/icons on light backgrounds */
+  --primary-strong: #a1520a;
+  --secondary: #e8f5e9;
+  --secondary-foreground: #1b5e20;
+  --accent: #e0d6c9;
+  --accent-foreground: #3e2723;
+  --destructive: #c62828;
   --destructive-foreground: #ffffff;
-  --success: #6cc29a;
+  --success: #2e7d32;
   --success-foreground: #ffffff;
-  --border: #d561a3;
-  --shadow-color: #be5991;
+  --border: #2e7d32;
+  --shadow-color: #b09a84;
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 28px;

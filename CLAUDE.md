@@ -6,24 +6,52 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A multi-game website **for young children (~6 years old)** — this drives real decisions, not just a note: big tap targets, short/simple wording in both languages, no scary or complex UI, a rules explanation before play, not just "hardcore" or dense text. Hangman is the first game built and establishes the conventions (folder layout, how a game talks to the backend, how round state works, i18n, the pre-game rules modal) that later games should follow — favor patterns that generalize to "add another game," not one-off solutions specific to Hangman. A prior throwaway Hangman prototype (plain HTML/CSS/JS) was deleted before this rebuild; it was scrapped intentionally and is not a reference for anything here.
 
+## Working with the author
+
+The author is a senior back-end PHP/Symfony developer who is new to React, Vite, and
+front-end TypeScript, and has asked to be mentored while this project is built.
+**Invoke the `mentor` skill (`.claude/skills/mentor/SKILL.md`) before doing any
+front-end work** — it defines what to explain, at what depth, and in what format. It
+does not apply to back-end work, which is already familiar ground for him.
+
 ## Stack
 
 - **Frontend:** React + TypeScript, scaffolded with Vite (`npm create vite@latest frontend -- --template react-ts`), routed with `react-router-dom`.
 - **Backend:** Node.js + Express + TypeScript, run via `tsx`.
 
-## Visual theme ("Bubblegum")
+## Visual theme ("Clomo")
 
-The whole frontend follows the "Bubblegum" theme from tweakcn/21st.dev (`@serafimcloud/themes/bubblegum`) — a candy-colored, sticker-shadow design system, chosen for a modern-but-playful look for young kids. Tokens live as CSS custom properties in `frontend/src/index.css` (`--primary` hot pink `#d04f99`, `--secondary` teal `#8acfd1`, `--accent` soft yellow `#fbe2a7`, `--card` cream `#fdedc9`, `--destructive` coral `#f96f70`, plus a custom `--success` green not in the original theme, added for correct-guess feedback). Font is Poppins, loaded via a Google Fonts `<link>` in `index.html` (verify it still renders correctly if that link is ever removed/changed — no local fallback is bundled).
+The whole frontend follows the **"Clomo" theme** — named after Clomo, the fox-cub mascot the site is being built around — a soft cream/amber/forest palette adapted from the community "Ninja" theme on 21st.dev (`@ferreiraferreira14/themes/ninja-1786814780438`). It replaced the original "Bubblegum" theme on 2026-08-24: the candy pink/teal palette was swapped out because it clashed with the fox mascot. The sticker-shadow mechanic and the rounded radii were kept unchanged — **only the color values moved**, which cost 16 lines in `index.css` plus 9 targeted fixes, because the app is almost fully tokenized. Two of those 9 were invisible to `tsc`, oxlint and the eye, and only surfaced by screenshotting the running app: the word-display dashes (`border-bottom: 4px solid var(--primary)`, 1.71:1 on white) and a modal scrim that turned the whole cream page muddy. **Screenshot the app after any palette change** — a valid stylesheet proves nothing here.
 
-The signature visual move is the **hard/solid "sticker" shadow**: `box-shadow: Npx Npx 0 0 var(--shadow-color)` — no blur, a flat offset block, like a card is popping off the page. Every card, button, and modal uses it, and interactive elements animate it on press: `:hover` nudges the element by `(-1px,-1px)` and grows the shadow by ~1px, `:active` pushes it to `(+2px,+2px)` and shrinks the shadow toward `0 0 0 0` — a satisfying "push the sticker down" tap effect. Follow this pattern (don't fall back to normal blurred `box-shadow`) for any new UI in this app, including future games.
+**Caveat on provenance:** 21st.dev renders its theme tokens client-side and the page requires a session, so the palette could not be read from the source. The hex values were sampled pixel-by-pixel from the theme's public OpenGraph preview image (`https://21st.dev/community/themes/ninja-1786814780438/opengraph-image-1re4pe`) — the *colors* are exact, but which color plays which shadcn role is this project's own interpretation, not the theme author's. If the official token list ever becomes available, reconcile against it.
 
-Page backgrounds use a diagonal pink→teal gradient (`--bg-start`/`--bg-end`); content sits in cream (`--card`) panels with a solid hot-pink `--border`. This is a deliberate adaptation, not a literal copy of the source theme's tokens — the source theme's own `--radius` is a tight `0.4rem` (blocky), but this app keeps its own larger pill/rounded-corner radii (`--radius-sm`/`--radius-md`/`--radius-lg` in `index.css`) because that reads as more "enfantin" for the target audience; the palette and the shadow mechanic are what was carried over faithfully.
+Tokens live as CSS custom properties in `frontend/src/index.css`: `--primary` amber `#fcb960` (Clomo's fur), `--secondary` mint `#e8f5e9`, `--accent` warm beige `#e0d6c9`, `--card` white, `--card-foreground` dark brown `#3e2723`, `--border` and `--success` forest green `#2e7d32`, `--shadow-color` warm taupe `#b09a84`. Two tokens are **additions not present in the source theme**: `--success` (carried over from Bubblegum, for correct-guess feedback) and `--destructive` `#c62828` (the Ninja palette contains no red at all, and wrong-guess feedback needs one). Font is Poppins, loaded via a Google Fonts `<link>` in `index.html` (verify it still renders correctly if that link is ever removed/changed — no local fallback is bundled).
+
+**`--primary` is a surface color only — never use it as a text or icon color.** Amber `#fcb960` on white is 1.71:1, far below the WCAG AA floor. `--primary-strong` `#a1520a` (5.63:1 on white) exists for exactly that: text, icon strokes, and bold spans that need to read as "Clomo orange" on a light background. For the same reason `--primary-foreground` is dark brown, not white — white on amber is unreadable. Every foreground/background pair currently in the CSS was checked against WCAG AA before the palette was committed; re-check with the same method if any token value changes.
+
+The signature visual move is the **hard/solid "sticker" shadow**: `box-shadow: Npx Npx 0 0 var(--shadow-color)` — no blur, a flat offset block, like a card is popping off the page. Every card, button, and modal uses it, and interactive elements animate it on press: `:hover` nudges the element by `(-1px,-1px)` and grows the shadow by ~1px, `:active` pushes it to `(+2px,+2px)` and shrinks the shadow toward `0 0 0 0` — a satisfying "push the sticker down" tap effect. Follow this pattern (don't fall back to normal blurred `box-shadow`) for any new UI in this app, including future games. `--shadow-color` must stay dark enough to be visible against **both** ends of the page gradient — the first candidate (`#d8c9b5`) was rejected at 1.13:1 against `--bg-end`, where the shadow would have vanished.
+
+Page backgrounds use a very soft diagonal cream→beige gradient (`--bg-start` `#fdfbf7` → `--bg-end` `#e0d6c9`); content sits in white (`--card`) panels with a solid forest-green `--border`, and color is spent only where it carries meaning (amber for the primary action, green for correct, red for wrong). The larger pill/rounded radii (`--radius-sm`/`--radius-md`/`--radius-lg`) are this app's own choice, kept from the Bubblegum era because they read as more "enfantin" for the target audience.
+
+## Mascot ("Clomo")
+
+Clomo is the site's fox-cub mascot; the "Clomo" color theme is named after him. Source art lives in `design/Clomo/` as two Gemini-generated JPEG sheets (2816×1536, several poses per sheet, white background) — **treat those as read-only originals**; every derived file is regenerated from them, never edited in place.
+
+`design/Clomo/decoupe.mjs` (needs `npm i sharp`) cuts the sheets into six transparent sprites in `design/Clomo/detoure/`, as PNG and WebP, 768px on the long side: `clomo-coucou`, `clomo-ordinateur`, `clomo-court`, `clomo-bravo`, `clomo-lecture-a`, `clomo-lecture-b`. The script header documents why the background removal floods in from the image borders instead of keying on white, and why sprites are masked by connected component — both are load-bearing, re-read them before changing any threshold.
+
+Clomo's fur sits at hue 18–27° and `--primary-strong` `#a1520a` at 28.6°, so the mascot and the UI orange are the same family by measurement, not by luck. `--primary` `#fcb960` (34.2°) reads as a pale tint of him.
+
+Four poses are wired into the app, as WebP under `frontend/src/assets/clomo/`: `coucou` (Clomo explaining the rules), `ordinateur` (home page header, his laptop reads "Playground"), `bravo` (hangman win) and `court` (hangman loss — a fox bounding along reads as "come on, try again", which is why the loss screen gets a cheerful pose rather than a sad one). The two `lecture` poses stay unused, see the caveat below. They are `import`ed rather than served from `public/` so Vite fingerprints the filenames (`clomo-bravo-DCe0EH6y.webp`) and a wrong path breaks `npm run build` instead of 404-ing in production. The "no external asset dependency" rule elsewhere in this file is about *remote* assets and emoji fonts; bundled mascot art is fine.
+
+`frontend/src/mascot/Clomo.tsx` is the only thing that should reference those files: `<Clomo pose="bravo" height={150} />`. It lives outside `games/` because the mascot belongs to the site, not to Hangman. Each pose declares its intrinsic width/height so the `<img>` reserves the right box before the file loads (the poses have different aspect ratios — `height` is the prop, width follows), and its `alt` text is a `TranslationKey` like every other string. Adding a pose means dropping the WebP in and adding one entry to `POSES` plus its `clomo.alt.*` strings in both dictionaries.
+
+**Caveat on the two `lecture` poses:** the book art contains machine-generated text — `clomo-lecture-b`'s reads "CLOMO'S BIG BOOK OF CODING" (English, on a French site for 6-year-olds) and `clomo-lecture-a`'s is illegible gibberish. Prefer the other four poses, or regenerate these with no text on the book.
 
 ## Pages & routing
 
 - `/` — `frontend/src/pages/HomePage.tsx`: lists every game as a big clickable card, sourced from `frontend/src/games/registry.ts` (a `GameDescriptor[]`: id, route path, an `Icon` component, and title/description translation keys). **Adding a game means adding one entry here** — the home page needs no other changes.
 - `/games/hangman` — `frontend/src/games/hangman/Hangman.tsx`, the game itself.
-- Card icons are inline SVG components (`HangmanFigure.tsx` reused at `wrongGuesses={3}` for its card), not emoji — emoji glyph rendering depends on the OS having a color-emoji font installed, which isn't guaranteed (confirmed broken in this project's own headless-browser testing setup). Follow the same approach for new games' icons.
+- Card icons are inline SVG components (`HangmanFigure.tsx` reused at `wrongGuesses={3}` for its card), not emoji — emoji glyph rendering depends on the OS having a color-emoji font installed, which isn't guaranteed (confirmed broken in this project's own headless-browser testing setup). Follow the same approach for new games' icons. **This applies to translation strings too, not just icons:** `hangman.win.title` used to end in a 🎉 that rendered as a tofu box, caught by screenshotting the win modal on 2026-08-25 and removed — Clomo's `bravo` pose now carries that celebration. Don't put emoji in `translations.ts`.
 
 ## Internationalization (English/French, auto-detected)
 
@@ -31,9 +59,13 @@ Custom, dependency-free i18n under `frontend/src/i18n/`: `translations.ts` holds
 
 Every user-facing string in the app must go through `t()`, including error messages — see `useHangmanRound.ts`, which stores an `error` as a `TranslationKey` (e.g. `"hangman.errorConnect"`) rather than a literal string, and the component calls `t(error)` at render time. Follow that pattern for new errors/copy: put the string in both dictionaries, never inline text in a component.
 
-## Pre-game rules modal
+## Pre-game rules modal (Clomo's speech bubble)
 
-`Hangman.tsx` renders `RulesModal.tsx` on top of the game (`showRules` state, starts `true`) until the child taps the "let's play" button — explains the rules in plain language before any interaction. The round itself loads normally underneath; the modal is a full-viewport overlay (reusing `.game-modal`) that blocks input until dismissed, it doesn't delay fetching. New games should do the same: a short rules modal shown before first interaction, not a wall of text, written at a 6-year-old's reading/listening level in both `en` and `fr`.
+`Hangman.tsx` renders `RulesModal.tsx` on top of the game (`showRules` state, starts `true`) until the child dismisses it. The round loads normally underneath; the modal is a full-viewport overlay (reusing `.game-modal`) that blocks input until dismissed, it doesn't delay fetching.
+
+The rules are **spoken by Clomo, one short sentence per speech bubble**, paginated rather than shown as one block — a wall of text does not work for a 6-year-old, and a bubble big enough to hold it stops reading as a speech bubble. `frontend/src/mascot/ClomoRules.tsx` owns the mascot, the bubble, the step dots and the Next → "let's play" button; it is **game-agnostic** and takes `steps: readonly TranslationKey[]`. Each game keeps a thin `RulesModal.tsx` whose only job is to name its own steps — that is the pattern for game #2: write three short sentences, add them to both dictionaries as `<game>.rules.stepN`, and pass them to `ClomoRules`.
+
+`.speech-text` carries a `min-height` so the bubble does not resize as the child pages through; if a new game's sentences are longer, adjust that value rather than letting the bubble jump. The bubble tail is two stacked CSS triangles (border colour behind, card colour in front) and flips from pointing left to pointing up under 560px, where Clomo moves above the bubble.
 
 ## Architecture: server-authoritative round state
 

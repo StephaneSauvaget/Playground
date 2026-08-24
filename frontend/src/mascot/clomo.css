@@ -1,0 +1,145 @@
+.clomo {
+  display: block;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* ---- Clomo explaining the rules, in a speech bubble ---- */
+
+.clomo-rules {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  width: 90%;
+  max-width: 560px;
+}
+
+.clomo-rules-mascot {
+  flex: none;
+}
+
+.speech-bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 6px 6px 0 0 var(--shadow-color);
+  text-align: center;
+}
+
+/* Bubble tail: two stacked triangles — the border-coloured one sits 2px further
+   out so it reads as the outline of the smaller card-coloured one on top. */
+.speech-bubble::before,
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 26px;
+  border-style: solid;
+  border-width: 11px 15px 11px 0;
+  border-color: transparent var(--border) transparent transparent;
+}
+
+.speech-bubble::after {
+  border-color: transparent var(--card) transparent transparent;
+}
+
+.speech-bubble::before {
+  left: -15px;
+}
+
+.speech-bubble::after {
+  left: -12px;
+}
+
+.speech-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.speech-text {
+  /* Fixed room for the longest step so the bubble doesn't resize as it paginates. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4em;
+  margin: 10px 0 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.speech-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.speech-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.speech-dots .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 1.5px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.speech-dots .dot.current {
+  background: var(--primary);
+}
+
+.speech-nav .play-again {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+/* Narrow screens: Clomo sits above the bubble, tail points up at him. */
+@media (max-width: 560px) {
+  .clomo-rules {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .clomo-rules-mascot {
+    height: 140px !important;
+    margin-bottom: -6px;
+  }
+
+  .speech-bubble {
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .speech-bubble::before,
+  .speech-bubble::after {
+    bottom: auto;
+    left: 50%;
+    border-width: 0 11px 15px 11px;
+    border-color: transparent transparent var(--border) transparent;
+  }
+
+  .speech-bubble::before {
+    top: -15px;
+    transform: translateX(-50%);
+  }
+
+  .speech-bubble::after {
+    top: -12px;
+    transform: translateX(-50%);
+    border-color: transparent transparent var(--card) transparent;
+  }
+}

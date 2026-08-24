@@ -12,7 +12,7 @@ export const en = {
   "hangman.errorGuess": "That letter didn't go through. Try again!",
   "hangman.retry": "Retry",
   "hangman.incorrectGuesses": "Mistakes",
-  "hangman.win.title": "You found it! 🎉",
+  "hangman.win.title": "You found it!",
   "hangman.win.message": "The word was:",
   "hangman.lose.title": "So close!",
   "hangman.lose.message": "The word was:",
@@ -20,10 +20,18 @@ export const en = {
   "hangman.hintShow": "Show hint",
   "hangman.hintHide": "Hide hint",
   "hangman.usedLetters": "Letters tried",
+  "hangman.rules.step1": "Hi! I'm Clomo. A secret word is hiding behind the dashes.",
+  "hangman.rules.step2": "Tap a letter. If it's in the word, it pops up!",
+  "hangman.rules.step3": "If you're wrong, a piece of the drawing appears. Find the word before it's done!",
 
   "rules.title": "How to play",
-  "rules.body": "A secret word is hiding behind the dashes. Click on letters to try to find it! If you're right, the letter shows up. If you're wrong, part of the little drawing appears. Try to guess the whole word before the drawing is finished!",
+  "rules.next": "Next",
   "rules.start": "Let's play!",
+
+  "clomo.alt.coucou": "Clomo the fox cub, waving hello",
+  "clomo.alt.ordinateur": "Clomo the fox cub with his laptop",
+  "clomo.alt.bravo": "Clomo the fox cub, jumping for joy",
+  "clomo.alt.court": "Clomo the fox cub, bounding along",
 } as const;
 
 export type TranslationKey = keyof typeof en;
@@ -42,7 +50,7 @@ export const fr: Record<TranslationKey, string> = {
   "hangman.errorGuess": "Cette lettre n'a pas fonctionné. Essaie encore !",
   "hangman.retry": "Réessayer",
   "hangman.incorrectGuesses": "Erreurs",
-  "hangman.win.title": "Bravo, tu as trouvé ! 🎉",
+  "hangman.win.title": "Bravo, tu as trouvé !",
   "hangman.win.message": "Le mot était :",
   "hangman.lose.title": "Presque !",
   "hangman.lose.message": "Le mot était :",
@@ -50,8 +58,16 @@ export const fr: Record<TranslationKey, string> = {
   "hangman.hintShow": "Voir l'indice",
   "hangman.hintHide": "Cacher l'indice",
   "hangman.usedLetters": "Lettres essayées",
+  "hangman.rules.step1": "Salut ! Moi c'est Clomo. Un mot secret se cache derrière les tirets.",
+  "hangman.rules.step2": "Clique sur une lettre. Si elle est dans le mot, elle apparaît !",
+  "hangman.rules.step3": "Si tu te trompes, un bout du dessin apparaît. Trouve le mot avant la fin !",
 
   "rules.title": "Comment jouer ?",
-  "rules.body": "Un mot secret se cache derrière des tirets. Clique sur les lettres pour essayer de le trouver ! Si tu as raison, la lettre apparaît. Si tu te trompes, un bout du petit dessin apparaît. Essaie de deviner tout le mot avant que le dessin soit terminé !",
+  "rules.next": "Suivant",
   "rules.start": "C'est parti !",
+
+  "clomo.alt.coucou": "Clomo le renardeau, qui fait coucou",
+  "clomo.alt.ordinateur": "Clomo le renardeau avec son ordinateur",
+  "clomo.alt.bravo": "Clomo le renardeau, qui saute de joie",
+  "clomo.alt.court": "Clomo le renardeau, qui bondit",
 };
