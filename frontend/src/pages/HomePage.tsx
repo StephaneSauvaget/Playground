@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { games } from "../games/registry";
 import { useI18n } from "../i18n/I18nContext";
+import { Clomo } from "../mascot/Clomo";
 import "./home.css";
 
 export function HomePage() {
@@ -8,8 +9,13 @@ export function HomePage() {
 
   return (
     <div className="home-page">
-      <h1>{t("home.title")}</h1>
-      <p className="home-subtitle">{t("home.subtitle")}</p>
+      <div className="home-header">
+        <Clomo pose="ordinateur" height={200} className="home-clomo" />
+        <div className="home-headings">
+          <h1>{t("home.title")}</h1>
+          <p className="home-subtitle">{t("home.subtitle")}</p>
+        </div>
+      </div>
       <div className="game-cards">
         {games.map((game) => (
           <Link key={game.id} to={game.path} className="game-card">

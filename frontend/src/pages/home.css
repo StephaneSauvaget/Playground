@@ -5,20 +5,36 @@
   align-items: center;
   padding: 40px 20px;
   text-align: center;
-  color: #fff;
+  color: var(--card-foreground);
+}
+
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.home-headings {
+  text-align: left;
 }
 
 .home-page h1 {
   font-size: 3rem;
   font-weight: 800;
-  margin: 20px 0 10px;
-  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+  margin: 0;
+  text-shadow: 0 3px 0 var(--shadow-color);
 }
 
 .home-subtitle {
   font-size: 1.4rem;
   font-weight: 500;
-  margin-bottom: 40px;
+  margin: 6px 0 0;
+}
+
+.game-cards {
+  margin-top: 40px;
 }
 
 .game-cards {
@@ -63,7 +79,7 @@
 .game-card-icon svg {
   width: 90px;
   height: 80px;
-  color: var(--primary);
+  color: var(--primary-strong);
 }
 
 .game-card-title {
@@ -89,6 +105,21 @@
   text-transform: uppercase;
   font-size: 1.1rem;
   box-shadow: 3px 3px 0 0 var(--shadow-color);
+}
+
+@media (max-width: 620px) {
+  .home-header {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .home-headings {
+    text-align: center;
+  }
+
+  .home-clomo {
+    height: 150px !important;
+  }
 }
 
 @media (max-width: 480px) {
