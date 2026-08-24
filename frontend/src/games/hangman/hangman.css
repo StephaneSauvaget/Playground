@@ -7,10 +7,21 @@
   padding: 20px;
 }
 
-.back-home-link {
+.top-left-controls {
   position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+
+.back-home-link,
+.rules-button {
+  /* <button> inherits neither font nor size — say it, or it falls back to the UA's */
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
   padding: 10px 18px;
   border-radius: 999px;
   background: var(--card);
@@ -19,18 +30,19 @@
   text-decoration: none;
   font-weight: 700;
   box-shadow: 3px 3px 0 0 var(--shadow-color);
-  z-index: 20;
   transition:
     transform 0.1s ease,
     box-shadow 0.1s ease;
 }
 
-.back-home-link:hover {
+.back-home-link:hover,
+.rules-button:hover {
   transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0 0 var(--shadow-color);
 }
 
-.back-home-link:active {
+.back-home-link:active,
+.rules-button:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 0 var(--shadow-color);
 }
@@ -59,52 +71,6 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-}
-
-.used-letters {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  max-width: 180px;
-  padding: 8px 10px;
-  background: var(--card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-}
-
-.used-letters-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--secondary-foreground);
-  text-transform: uppercase;
-}
-
-.used-letters-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-
-.used-letter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  color: #fff;
-}
-
-.used-letter.correct {
-  background: var(--success);
-}
-
-.used-letter.wrong {
-  background: var(--destructive);
 }
 
 .hint-button {
@@ -149,7 +115,39 @@
 .hangman-figure {
   width: 200px;
   height: 180px;
+  /* the wood; the body has its own stroke below */
   color: var(--card-foreground);
+}
+
+.hangman-figure .hangman-body {
+  stroke: var(--primary-strong);
+}
+
+/* Each new part pops in. Only the freshly added element animates: the others
+   keep their React key, so they are not re-inserted and the animation on them
+   never restarts. */
+.hangman-figure .hangman-body > * {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hangman-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes hangman-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hangman-figure .hangman-body > * {
+    animation: none;
+  }
 }
 
 .hangman-box {
@@ -194,16 +192,34 @@
   border-color: transparent;
 }
 
-.hint-text,
-.guesses-text {
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 16px;
+.mistake-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.guesses-text b {
-  color: var(--destructive);
+.mistake-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--card);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.mistake-dot.used {
+  background: var(--destructive);
+  border-color: var(--destructive);
+  transform: scale(1.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mistake-dot {
+    transition: none;
+  }
 }
 
 .keyboard {
@@ -245,6 +261,23 @@
   opacity: 0.45;
   pointer-events: none;
   box-shadow: none;
+}
+
+/* Attribute + class beats the [disabled] washout on specificity alone, so
+   these stay readable wherever they sit in the file. */
+.keyboard button[disabled].correct,
+.keyboard button[disabled].wrong {
+  opacity: 1;
+  color: #fff;
+  border-color: var(--border);
+}
+
+.keyboard button[disabled].correct {
+  background: var(--success);
+}
+
+.keyboard button[disabled].wrong {
+  background: var(--destructive);
 }
 
 .game-modal {
@@ -305,12 +338,6 @@
 .game-modal .play-again:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 0 var(--shadow-color);
-}
-
-.rules-content p {
-  font-size: 1.15rem;
-  font-weight: 500;
-  line-height: 1.5;
 }
 
 .error {

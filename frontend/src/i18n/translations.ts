@@ -19,13 +19,14 @@ export const en = {
   "hangman.playAgain": "Play again",
   "hangman.hintShow": "Show hint",
   "hangman.hintHide": "Hide hint",
-  "hangman.usedLetters": "Letters tried",
   "hangman.rules.step1": "Hi! I'm Clomo. A secret word is hiding behind the dashes.",
   "hangman.rules.step2": "Tap a letter. If it's in the word, it pops up!",
   "hangman.rules.step3": "If you're wrong, a piece of the drawing appears. Find the word before it's done!",
 
   "rules.title": "How to play",
   "rules.next": "Next",
+  "rules.close": "Close",
+  "rules.reopen": "Rules",
   "rules.start": "Let's play!",
 
   "clomo.alt.coucou": "Clomo the fox cub, waving hello",
@@ -57,13 +58,14 @@ export const fr: Record<TranslationKey, string> = {
   "hangman.playAgain": "Rejouer",
   "hangman.hintShow": "Voir l'indice",
   "hangman.hintHide": "Cacher l'indice",
-  "hangman.usedLetters": "Lettres essayées",
   "hangman.rules.step1": "Salut ! Moi c'est Clomo. Un mot secret se cache derrière les tirets.",
   "hangman.rules.step2": "Clique sur une lettre. Si elle est dans le mot, elle apparaît !",
   "hangman.rules.step3": "Si tu te trompes, un bout du dessin apparaît. Trouve le mot avant la fin !",
 
   "rules.title": "Comment jouer ?",
   "rules.next": "Suivant",
+  "rules.close": "Fermer",
+  "rules.reopen": "Règles",
   "rules.start": "C'est parti !",
 
   "clomo.alt.coucou": "Clomo le renardeau, qui fait coucou",

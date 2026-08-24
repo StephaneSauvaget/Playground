@@ -57,8 +57,48 @@
   left: -12px;
 }
 
+.speech-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 36px: a 6-year-old's finger, not a mouse pointer */
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--card-foreground);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.speech-close svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.speech-close:hover {
+  background: var(--accent);
+}
+
+.speech-close:active {
+  transform: scale(0.88);
+}
+
 .speech-title {
   margin: 0;
+  /* keeps the centred title clear of the close button on narrow bubbles */
+  padding: 0 34px;
   font-size: 1.2rem;
   font-weight: 800;
 }

@@ -25,6 +25,18 @@ export function ClomoRules({ steps, onStart }: ClomoRulesProps) {
         <Clomo pose="coucou" height={190} className="clomo-rules-mascot" />
 
         <div className="speech-bubble">
+          <button
+            type="button"
+            className="speech-close"
+            onClick={onStart}
+            aria-label={t("rules.close")}
+          >
+            {/* inline SVG rather than a glyph, like every other icon in the app */}
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 7 L17 17 M17 7 L7 17" />
+            </svg>
+          </button>
+
           <h4 className="speech-title">{t("rules.title")}</h4>
           <p className="speech-text">{t(steps[step])}</p>
 
