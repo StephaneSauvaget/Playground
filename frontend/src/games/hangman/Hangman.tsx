@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import { GameOverModal } from "./GameOverModal";
@@ -8,13 +7,14 @@ import { Keyboard } from "./Keyboard";
 import { RulesModal } from "./RulesModal";
 import { UsedLetters } from "./UsedLetters";
 import { WordDisplay } from "./WordDisplay";
+import { useRules } from "../../mascot/useRules";
 import { useHangmanRound } from "./useHangmanRound";
 import "./hangman.css";
 
 export function Hangman() {
   const { t } = useI18n();
   const { round, error, guess, playAgain } = useHangmanRound();
-  const [showRules, setShowRules] = useState(true);
+  const { rulesOpen, openRules, closeRules } = useRules("hangman");
 
   if (error) {
     return (
@@ -37,9 +37,14 @@ export function Hangman() {
 
   return (
     <div className="hangman-game">
-      <Link to="/" className="back-home-link">
-        {t("hangman.backHome")}
-      </Link>
+      <div className="top-left-controls">
+        <Link to="/" className="back-home-link">
+          {t("hangman.backHome")}
+        </Link>
+        <button type="button" className="rules-button" onClick={openRules}>
+          {t("rules.reopen")}
+        </button>
+      </div>
       <div className="container">
         <div className="top-right-controls">
           <UsedLetters guessedLetters={round.guessedLetters} display={round.display} />
@@ -62,7 +67,7 @@ export function Hangman() {
         </div>
       </div>
       <GameOverModal round={round} onPlayAgain={playAgain} />
-      {showRules && <RulesModal onStart={() => setShowRules(false)} />}
+      {rulesOpen && <RulesModal onStart={closeRules} />}
     </div>
   );
 }

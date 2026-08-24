@@ -61,7 +61,11 @@ Every user-facing string in the app must go through `t()`, including error messa
 
 ## Pre-game rules modal (Clomo's speech bubble)
 
-`Hangman.tsx` renders `RulesModal.tsx` on top of the game (`showRules` state, starts `true`) until the child dismisses it. The round loads normally underneath; the modal is a full-viewport overlay (reusing `.game-modal`) that blocks input until dismissed, it doesn't delay fetching.
+`Hangman.tsx` renders `RulesModal.tsx` on top of the game until the child dismisses it — with the close cross at the top right of the bubble, or by paging through to "let's play". The round loads normally underneath; the modal is a full-viewport overlay (reusing `.game-modal`) that blocks input until dismissed, it doesn't delay fetching.
+
+**Shown automatically on the first visit only.** `frontend/src/mascot/useRules.ts` owns that: it stores `playground.rules-seen.<gameId>` in `localStorage` and returns `{ rulesOpen, openRules, closeRules }`. This is deliberately **not** backend state — `backend/src/hangman/store.ts` holds round state, has no notion of a user, and is lost on restart; "this browser has read the notice" belongs to the browser. Every `localStorage` access is wrapped in try/catch, because it throws in private browsing and when site data is blocked; it degrades to "not seen yet" so a child can always play (verified against a context where the accessor throws).
+
+Because the notice stops appearing on its own, **every game must give a way back to it** — Hangman has a "rules" button next to "back to games" in `.top-left-controls`. Without it the rules become unreachable for the next child on the same device. Reuse `useRules(gameId)` in game #2 and the whole behaviour comes with it.
 
 The rules are **spoken by Clomo, one short sentence per speech bubble**, paginated rather than shown as one block — a wall of text does not work for a 6-year-old, and a bubble big enough to hold it stops reading as a speech bubble. `frontend/src/mascot/ClomoRules.tsx` owns the mascot, the bubble, the step dots and the Next → "let's play" button; it is **game-agnostic** and takes `steps: readonly TranslationKey[]`. Each game keeps a thin `RulesModal.tsx` whose only job is to name its own steps — that is the pattern for game #2: write three short sentences, add them to both dictionaries as `<game>.rules.stepN`, and pass them to `ClomoRules`.
 

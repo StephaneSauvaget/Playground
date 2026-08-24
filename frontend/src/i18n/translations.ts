@@ -26,6 +26,8 @@ export const en = {
 
   "rules.title": "How to play",
   "rules.next": "Next",
+  "rules.close": "Close",
+  "rules.reopen": "Rules",
   "rules.start": "Let's play!",
 
   "clomo.alt.coucou": "Clomo the fox cub, waving hello",
@@ -64,6 +66,8 @@ export const fr: Record<TranslationKey, string> = {
 
   "rules.title": "Comment jouer ?",
   "rules.next": "Suivant",
+  "rules.close": "Fermer",
+  "rules.reopen": "Règles",
   "rules.start": "C'est parti !",
 
   "clomo.alt.coucou": "Clomo le renardeau, qui fait coucou",

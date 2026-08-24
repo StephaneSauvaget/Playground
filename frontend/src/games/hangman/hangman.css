@@ -7,10 +7,21 @@
   padding: 20px;
 }
 
-.back-home-link {
+.top-left-controls {
   position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+
+.back-home-link,
+.rules-button {
+  /* <button> inherits neither font nor size — say it, or it falls back to the UA's */
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
   padding: 10px 18px;
   border-radius: 999px;
   background: var(--card);
@@ -19,18 +30,19 @@
   text-decoration: none;
   font-weight: 700;
   box-shadow: 3px 3px 0 0 var(--shadow-color);
-  z-index: 20;
   transition:
     transform 0.1s ease,
     box-shadow 0.1s ease;
 }
 
-.back-home-link:hover {
+.back-home-link:hover,
+.rules-button:hover {
   transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0 0 var(--shadow-color);
 }
 
-.back-home-link:active {
+.back-home-link:active,
+.rules-button:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 0 var(--shadow-color);
 }
