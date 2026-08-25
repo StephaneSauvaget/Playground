@@ -458,3 +458,23 @@
     transition: none;
   }
 }
+
+/* The definition on the end-of-round card: the word is the answer, this is what the
+   child takes away from it. Kept quieter than the word itself, but not decorative. */
+.word-definition {
+  max-width: 30ch;
+  margin: -4px auto 4px;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--card-foreground);
+}
+
+.definition-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-strong);
+}

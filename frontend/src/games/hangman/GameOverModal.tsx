@@ -21,6 +21,11 @@ export function GameOverModal({ round, onPlayAgain }: GameOverModalProps) {
         <p>
           {won ? t("hangman.win.message") : t("hangman.lose.message")} <b>{round.word}</b>
         </p>
+        {/* The definition is shown on a loss too: that child needs the word more, not less. */}
+        <p className="word-definition">
+          <span className="definition-label">{t("hangman.definition")}</span>
+          {round.hint}
+        </p>
         <button type="button" className="play-again" onClick={onPlayAgain}>
           {t("hangman.playAgain")}
         </button>
