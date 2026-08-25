@@ -94,3 +94,46 @@ prétexte qu'il contient la bonne valeur aujourd'hui.
 la formule de luminance relative) et donc ça se vérifie automatiquement — on ne
 « regarde pas si ça passe ». Sur cette app, `#ffffff` sur l'ambre `#fcb960` donne
 1.71:1 : inutilisable, et impossible à deviner à l'oeil.
+
+## Un effet qu'on empêche de partir (vu sur les niveaux de difficulté)
+
+`useHangmanRound(difficulty)` charge une partie dans un `useEffect`. Tant que
+`difficulty` vaut `null`, la fonction sort immédiatement : **l'effet part quand même,
+il ne fait rien**. C'est la façon idiomatique de dire « pas encore ».
+
+Le réflexe Symfony serait de ne pas appeler le service. Ici on ne contrôle pas *si* le
+composant s'exécute — React le ré-exécute quand il veut — on ne contrôle que ce que
+l'effet fait. Le garde est **dans** l'effet, jamais autour.
+
+Piège : `if (!difficulty) return;` doit être dans la fonction, pas avant le
+`useEffect`/`useState`. Les hooks doivent être appelés dans le même ordre à chaque
+rendu, toujours — un hook derrière un `if` casse React. C'est la règle qui n'a aucun
+équivalent PHP : l'ordre d'appel *est* l'identité de l'état.
+
+## Dériver pendant le rendu plutôt que corriger dans un effet
+
+Version d'abord écrite, refusée par oxlint (`react(set-state-in-effect)`) :
+
+```ts
+useEffect(() => {
+  setRound(null);   // effacer la partie précédente
+  load();
+}, [load]);
+```
+
+Version retenue : stocker la donnée **avec ce qui l'identifie**, et conclure au rendu.
+
+```ts
+const [loaded, setLoaded] = useState<{ forDifficulty: Difficulty; view: RoundView } | null>(null);
+const round = loaded && loaded.forDifficulty === difficulty ? loaded.view : null;
+```
+
+La règle générale : **si une valeur se calcule à partir de l'état, elle n'est pas de
+l'état.** Un `useState` qu'un `useEffect` doit remettre d'aplomb est presque toujours
+une valeur dérivée déguisée en état — et chaque `setState` dans un effet provoque un
+rendu de plus.
+
+L'analogie honnête côté Symfony est un *getter calculé* sur une entité plutôt qu'une
+propriété persistée qu'un listener doit resynchroniser. Le piège : en PHP la
+désynchronisation se voit en base ; ici elle se voit à l'écran, l'espace d'un rendu, et
+personne ne la reproduit.
