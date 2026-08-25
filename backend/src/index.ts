@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import { hangmanRouter } from "./hangman/router.js";
+import { assertHangmanPoolsAreUsable } from "./hangman/pools.js";
+
+assertHangmanPoolsAreUsable();
 
 const app = express();
 const port = process.env.PORT ?? 3001;
