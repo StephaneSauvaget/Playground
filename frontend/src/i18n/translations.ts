@@ -31,6 +31,7 @@ export const en = {
   "hangman.difficulty.normal.help": "Words of every size",
   "hangman.difficulty.hard.help": "Long words with lots of different letters",
   "difficulty.change": "Choose again",
+  "hangman.definition": "What it means:",
 
   "rules.title": "How to play",
   "rules.next": "Next",
@@ -79,6 +80,7 @@ export const fr: Record<TranslationKey, string> = {
   "hangman.difficulty.normal.help": "Des mots de toutes les tailles",
   "hangman.difficulty.hard.help": "Des mots longs avec plein de lettres différentes",
   "difficulty.change": "Choisir à nouveau",
+  "hangman.definition": "Ce que ça veut dire :",
 
   "rules.title": "Comment jouer ?",
   "rules.next": "Suivant",
