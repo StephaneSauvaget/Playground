@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
+import type { TranslationKey } from "../../i18n/translations";
+import { DifficultyPicker } from "../DifficultyPicker";
+import type { Difficulty } from "../difficulty";
 import { GameOverModal } from "./GameOverModal";
 import { HangmanFigure } from "./HangmanFigure";
 import { HintButton } from "./HintButton";
@@ -11,10 +15,48 @@ import { useRules } from "../../mascot/useRules";
 import { useHangmanRound } from "./useHangmanRound";
 import "./hangman.css";
 
+const DIFFICULTY_HELP: Record<Difficulty, TranslationKey> = {
+  easy: "hangman.difficulty.easy.help",
+  normal: "hangman.difficulty.normal.help",
+  hard: "hangman.difficulty.hard.help",
+};
+
 export function Hangman() {
   const { t } = useI18n();
-  const { round, error, guess, playAgain } = useHangmanRound();
+  // null = nothing chosen yet, so nothing is fetched. `lastChoice` survives that
+  // reset only to pre-highlight the previous pick.
+  const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
+  const [lastChoice, setLastChoice] = useState<Difficulty | null>(null);
+  const { round, error, guess, playAgain } = useHangmanRound(difficulty);
   const { rulesOpen, openRules, closeRules } = useRules("hangman");
+
+  const choose = (level: Difficulty) => {
+    setLastChoice(level);
+    setDifficulty(level);
+  };
+
+  if (!difficulty) {
+    return (
+      <div className="hangman-game">
+        <div className="top-left-controls">
+          <Link to="/" className="back-home-link">
+            {t("hangman.backHome")}
+          </Link>
+          <button type="button" className="rules-button" onClick={openRules}>
+            {t("rules.reopen")}
+          </button>
+        </div>
+        <div className="container">
+          <div className="hangman-box">
+            <HangmanFigure wrongGuesses={3} />
+            <h1>{t("hangman.title")}</h1>
+          </div>
+          <DifficultyPicker current={lastChoice} helpKeys={DIFFICULTY_HELP} onSelect={choose} />
+        </div>
+        {rulesOpen && <RulesModal onStart={closeRules} />}
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -44,6 +86,9 @@ export function Hangman() {
         <button type="button" className="rules-button" onClick={openRules}>
           {t("rules.reopen")}
         </button>
+        <button type="button" className="rules-button" onClick={() => setDifficulty(null)}>
+          {t("difficulty.change")}
+        </button>
       </div>
       <div className="container">
         <div className="top-right-controls">
@@ -67,7 +112,7 @@ export function Hangman() {
           />
         </div>
       </div>
-      <GameOverModal round={round} onPlayAgain={playAgain} />
+      <GameOverModal round={round} onPlayAgain={() => setDifficulty(null)} />
       {rulesOpen && <RulesModal onStart={closeRules} />}
     </div>
   );

@@ -23,6 +23,15 @@ export const en = {
   "hangman.rules.step2": "Tap a letter. If it's in the word, it pops up!",
   "hangman.rules.step3": "If you're wrong, a piece of the drawing appears. Find the word before it's done!",
 
+  "difficulty.question": "Which one do you want?",
+  "difficulty.easy": "Easy",
+  "difficulty.normal": "Normal",
+  "difficulty.hard": "Hard",
+  "hangman.difficulty.easy.help": "Short words, and a letter is given to you",
+  "hangman.difficulty.normal.help": "Words of every size",
+  "hangman.difficulty.hard.help": "Long words with lots of different letters",
+  "difficulty.change": "Choose again",
+
   "rules.title": "How to play",
   "rules.next": "Next",
   "rules.close": "Close",
@@ -61,6 +70,15 @@ export const fr: Record<TranslationKey, string> = {
   "hangman.rules.step1": "Salut ! Moi c'est Clomo. Un mot secret se cache derrière les tirets.",
   "hangman.rules.step2": "Clique sur une lettre. Si elle est dans le mot, elle apparaît !",
   "hangman.rules.step3": "Si tu te trompes, un bout du dessin apparaît. Trouve le mot avant la fin !",
+
+  "difficulty.question": "Tu veux lequel ?",
+  "difficulty.easy": "Facile",
+  "difficulty.normal": "Normal",
+  "difficulty.hard": "Difficile",
+  "hangman.difficulty.easy.help": "Des mots courts, et une lettre t'est offerte",
+  "hangman.difficulty.normal.help": "Des mots de toutes les tailles",
+  "hangman.difficulty.hard.help": "Des mots longs avec plein de lettres différentes",
+  "difficulty.change": "Choisir à nouveau",
 
   "rules.title": "Comment jouer ?",
   "rules.next": "Suivant",
