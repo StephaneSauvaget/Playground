@@ -156,7 +156,7 @@ So: when asked to commit, branch off `develop` rather than committing on the spo
 
 The author has said Claude can run git commands directly (2026-08-25) — branch, commit, merge and delete without asking each time.
 
-The remote is `https://github.com/StephaneSauvaget/Playground.git`. It is a **public** repository and was still empty as of 2026-08-25 — nothing has ever been pushed. Pushing therefore publishes everything in the history to the open internet, including `design/Clomo/` and this file. Confirm before a push that would publish new material; it is not covered by the blanket permission above.
+The remote is `https://github.com/StephaneSauvaget/Playground.git`. It is a **public** repository. It was empty on 2026-08-25, but `main` and `develop` have been pushed since — `develop` through the Memory game on 2026-09-09 — so **check `git ls-remote` rather than trusting this paragraph**; that is exactly the mistake this sentence used to cause. Everything in the history is on the open internet: the source art in `design/`, `docs/brainstorms/`, `.claude/`, and this file. Confirm before a push that would publish new material; it is not covered by the blanket permission above.
 
 ## Commands
 
