@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { TranslationKey } from "../i18n/translations";
 import { useI18n } from "../i18n/I18nContext";
 import { Clomo } from "./Clomo";
+import "../games/games.css";
 import "./clomo.css";
 
 interface ClomoRulesProps {

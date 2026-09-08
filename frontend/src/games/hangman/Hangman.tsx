@@ -13,6 +13,7 @@ import { RulesModal } from "./RulesModal";
 import { WordDisplay } from "./WordDisplay";
 import { useRules } from "../../mascot/useRules";
 import { useHangmanRound } from "./useHangmanRound";
+import "../games.css";
 import "./hangman.css";
 
 const DIFFICULTY_HELP: Record<Difficulty, TranslationKey> = {

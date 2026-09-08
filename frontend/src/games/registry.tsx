@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import { HangmanFigure } from "./hangman/HangmanFigure";
+import { MemoryIcon } from "./memory/MemoryIcon";
 import type { TranslationKey } from "../i18n/translations";
 
 export interface GameDescriptor {
@@ -17,5 +18,12 @@ export const games: GameDescriptor[] = [
     Icon: () => <HangmanFigure wrongGuesses={3} />,
     titleKey: "home.hangman.title",
     descriptionKey: "home.hangman.description",
+  },
+  {
+    id: "memory",
+    path: "/games/memory",
+    Icon: MemoryIcon,
+    titleKey: "home.memory.title",
+    descriptionKey: "home.memory.description",
   },
 ];
