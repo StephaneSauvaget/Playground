@@ -137,3 +137,59 @@ L'analogie honnête côté Symfony est un *getter calculé* sur une entité plut
 propriété persistée qu'un listener doit resynchroniser. Le piège : en PHP la
 désynchronisation se voit en base ; ici elle se voit à l'écran, l'espace d'un rendu, et
 personne ne la reproduit.
+
+## Passer du balisage en paramètre : `ReactNode` (vu sur `DifficultyPicker`)
+
+Le sélecteur de difficulté appartient au site, mais l'aperçu qu'il affiche appartient
+au jeu : le Pendu montre une rangée de tirets, le Memory une mini-grille de dos de
+cartes. La version d'origine codait les tirets en dur dans le composant partagé —
+tenable tant qu'il n'y avait qu'un jeu.
+
+```tsx
+previews: Record<Difficulty, ReactNode>;
+// ...
+<span className="difficulty-preview">{previews[level]}</span>
+```
+
+**Le concept :** en React, du balisage est une **valeur** comme une autre. `<Dashes />`
+n'est pas « du HTML », c'est un appel de fonction qui rend un objet décrivant quoi
+afficher ; il se range dans un `Record`, se passe en prop, se stocke dans une variable.
+`ReactNode` est le type de « tout ce que React sait afficher » — un élément, une
+chaîne, un nombre, un tableau, `null`.
+
+**L'analogie Symfony :** c'est un bloc Twig passé à un template parent, ou une
+implémentation injectée derrière une interface. Le parent définit *l'emplacement*,
+l'appelant fournit *le contenu*.
+
+**Où l'analogie ment :** un bloc Twig est inerte jusqu'au rendu du template. Ici
+`<Dashes count={3} />` est déjà construit au moment où tu écris `DIFFICULTY_PREVIEWS`,
+à l'import du module — donc **une seule fois**, pas à chaque rendu. C'est sans
+conséquence pour un aperçu statique ; ça le deviendrait si le contenu dépendait de
+l'état, et il faudrait alors le construire dans le corps du composant.
+
+**L'alternative écartée :** une prop fonction, `renderPreview: (level) => ReactNode`.
+Plus souple, inutile ici — il n'y a rien à calculer, juste trois valeurs à fournir. Un
+`Record` se lit comme une table de correspondance et reste symétrique de `helpKeys`,
+qui existait déjà juste à côté.
+
+## Une feuille de style importée par son composant
+
+`DifficultyPicker.tsx` fait `import "./games.css"`. Le composant tire son propre style,
+au lieu que le style soit importé par la page qui l'utilise.
+
+**Le concept :** avec Vite, un `import` de CSS est un **effet de bord de module ES**.
+Le bundler voit la dépendance, injecte la feuille, et la dédoublonne si dix composants
+l'importent. Ce n'est *pas* un scoping : les règles restent globales et
+`.difficulty-option` peut toujours entrer en collision. Ce qui est garanti, c'est la
+*présence* du style dès que le composant est dans le graphe, jamais son isolation.
+
+**Pourquoi ça compte ici :** ces règles vivaient dans `games/hangman/hangman.css`, et
+`DifficultyPicker` — composant de niveau site — n'en dépendait que par accident : il
+n'était utilisé que par une page qui, elle, importait ce fichier. Le jeu #2 aurait
+obtenu le composant tout nu. Le déplacement rend la dépendance explicite au lieu de
+l'espérer.
+
+**L'analogie Symfony :** un asset déclaré par le composant qui en a besoin plutôt que
+listé à la main dans le layout. Elle ment sur un point : ici rien ne vérifie qu'une
+classe est définie. Une règle manquante ne lève rien — ça ne se voit qu'à l'écran,
+d'où la capture systématique après tout déplacement de CSS.

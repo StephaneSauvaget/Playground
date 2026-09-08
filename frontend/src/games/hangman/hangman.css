@@ -345,118 +345,16 @@
   font-weight: 600;
 }
 
-/* --- Difficulty picker -------------------------------------------------
-   Lives in hangman.css for now because Hangman is its only caller; move it
-   out (with DifficultyPicker.tsx) the day game #2 imports the component. */
-
-.difficulty-picker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  margin-top: 8px;
-}
-
-.difficulty-picker h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--card-foreground);
-}
-
-.difficulty-options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.difficulty-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 200px;
-  min-height: 190px;
-  padding: 22px 18px;
-  background: var(--card);
-  border: 3px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: 6px 6px 0 0 var(--shadow-color);
-  cursor: pointer;
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
-
-.difficulty-option:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 7px 7px 0 0 var(--shadow-color);
-}
-
-.difficulty-option:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 0 var(--shadow-color);
-}
-
-/* The previous pick, so the child recognises it instead of choosing from scratch. */
-.difficulty-option[aria-current="true"] {
-  background: var(--primary);
-  border-color: var(--primary-strong);
-}
-
-/* Full opacity on amber: the dimmed help text lands at 4.47:1 there, under the AA
-   floor. It clears 6.2:1 on the white cards, so only this one needs the override. */
-.difficulty-option[aria-current="true"] .difficulty-help {
-  opacity: 1;
-}
-
-.difficulty-preview {
-  display: flex;
-  gap: 5px;
-  align-items: flex-end;
-  min-height: 26px;
-}
+/* --- Hangman's own difficulty preview ---------------------------------
+   The picker itself is site-level (games/games.css); this is only what Hangman
+   draws inside it: a row of dashes, i.e. literally the screen the child gets next.
+   Game #2 fills the same slot with something else. */
 
 .difficulty-dash {
   width: 14px;
   height: 4px;
   border-radius: 2px;
   background: var(--primary-strong);
-}
-
-.difficulty-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--card-foreground);
-}
-
-.difficulty-help {
-  font-size: 0.95rem;
-  line-height: 1.3;
-  color: var(--card-foreground);
-  opacity: 0.75;
-}
-
-@media (max-width: 560px) {
-  .difficulty-option {
-    width: 100%;
-    max-width: 320px;
-    min-height: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .difficulty-help {
-    flex-basis: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .difficulty-option {
-    transition: none;
-  }
 }
 
 /* The definition on the end-of-round card: the word is the answer, this is what the

@@ -1,21 +1,29 @@
+import type { ReactNode } from "react";
 import { useI18n } from "../i18n/I18nContext";
 import type { TranslationKey } from "../i18n/translations";
 import { DIFFICULTIES, DIFFICULTY_LABELS, type Difficulty } from "./difficulty";
+import "./games.css";
 
 interface DifficultyPickerProps {
   /** Highlighted as the previous pick, so the child doesn't rebuild the choice from scratch. */
   current: Difficulty | null;
   /** What each level means in THIS game. Site owns the names, the game owns the meaning. */
   helpKeys: Record<Difficulty, TranslationKey>;
+  /**
+   * What each level LOOKS like in this game — the only difference a child who can't
+   * read yet is able to see. Hangman draws a row of dashes, Memory a mini grid of card
+   * backs. Purely decorative, so the picker hides it from assistive tech.
+   */
+  previews: Record<Difficulty, ReactNode>;
   onSelect: (difficulty: Difficulty) => void;
 }
 
-// The whole point of the preview: a 6-year-old can't read "long words with lots of
-// different letters", but they can see that one row of dashes is longer than another.
-// It is also literally what the game screen will show them next.
-const PREVIEW_DASHES: Record<Difficulty, number> = { easy: 3, normal: 5, hard: 8 };
-
-export function DifficultyPicker({ current, helpKeys, onSelect }: DifficultyPickerProps) {
+export function DifficultyPicker({
+  current,
+  helpKeys,
+  previews,
+  onSelect,
+}: DifficultyPickerProps) {
   const { t } = useI18n();
 
   return (
@@ -31,9 +39,7 @@ export function DifficultyPicker({ current, helpKeys, onSelect }: DifficultyPick
             onClick={() => onSelect(level)}
           >
             <span className="difficulty-preview" aria-hidden="true">
-              {Array.from({ length: PREVIEW_DASHES[level] }, (_, i) => (
-                <span key={i} className="difficulty-dash" />
-              ))}
+              {previews[level]}
             </span>
             <span className="difficulty-name">{t(DIFFICULTY_LABELS[level])}</span>
             <span className="difficulty-help">{t(helpKeys[level])}</span>
