@@ -19,6 +19,9 @@ interface CardProps {
 export function Card({ patternId, altKey, faceUp, matched, onFlip }: CardProps) {
   const { t } = useI18n();
   const label = faceUp ? t(altKey as TranslationKey) : t("memory.cardFaceDown");
+  // alt="" on the <img>: the button already carries the name, and a second reading of
+  // it would just be noise.
+  const art = artFor(patternId);
 
   return (
     <button
@@ -37,7 +40,9 @@ export function Card({ patternId, altKey, faceUp, matched, onFlip }: CardProps) 
             <circle cx="24" cy="24" r="4" className="filled" />
           </svg>
         </span>
-        <span className="card-face card-front">{artFor(patternId)}</span>
+        <span className="card-face card-front">
+          {art && <img src={art} alt="" className="motif-art" />}
+        </span>
       </span>
     </button>
   );

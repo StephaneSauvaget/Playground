@@ -1,4 +1,4 @@
-import { patterns } from "../data/patterns.js";
+import { families, patterns } from "../data/patterns.js";
 import { DIFFICULTIES, GRID_BY_DIFFICULTY, MAX_PAIRS, PAIRS_BY_DIFFICULTY } from "./difficulty.js";
 
 /**
@@ -30,6 +30,18 @@ export function assertMemoryPatternsAreUsable(): void {
       `Memory needs at least ${MAX_PAIRS} distinct patterns (the hardest board's pair ` +
         `count), found ${ids.length} in data/patterns.ts. Below that, a board would deal ` +
         `the same motif as two different pairs.`,
+    );
+  }
+
+  // The easiest board must be able to show one motif per species: that is what makes
+  // it easy, far more than its three pairs. Below this, deal.ts would have to put two
+  // poses of the same animal in front of a child who is meeting the game.
+  const easiestPairs = Math.min(...DIFFICULTIES.map((level) => PAIRS_BY_DIFFICULTY[level]));
+  if (families.length < easiestPairs) {
+    throw new Error(
+      `Memory needs at least ${easiestPairs} pattern families (one per pair on the ` +
+        `easiest board), found ${families.length}: ${families.join(", ")}. ` +
+        `Check data/patterns.ts.`,
     );
   }
 
