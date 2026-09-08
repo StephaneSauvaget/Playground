@@ -2,8 +2,11 @@ import express from "express";
 import cors from "cors";
 import { hangmanRouter } from "./hangman/router.js";
 import { assertHangmanPoolsAreUsable } from "./hangman/pools.js";
+import { memoryRouter } from "./memory/router.js";
+import { assertMemoryPatternsAreUsable } from "./memory/pools.js";
 
 assertHangmanPoolsAreUsable();
+assertMemoryPatternsAreUsable();
 
 const app = express();
 const port = process.env.PORT ?? 3001;
@@ -16,6 +19,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/games/hangman", hangmanRouter);
+app.use("/api/games/memory", memoryRouter);
 
 app.listen(port, () => {
   console.log(`Backend listening on http://localhost:${port}`);
