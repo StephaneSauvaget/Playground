@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { patterns } from "../data/patterns.js";
+import { families, patterns, type PatternEntry } from "../data/patterns.js";
 import {
   DEFAULT_DIFFICULTY,
   GRID_BY_DIFFICULTY,
@@ -21,22 +21,59 @@ import type { MemoryCard, PublicBoardView } from "./types.js";
  * quests/progression features cannot invent after the fact.
  */
 
-/** Fisher-Yates, in place. */
-function shuffle<T>(items: T[]): T[] {
-  for (let i = items.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [items[i], items[j]] = [items[j], items[i]];
+/**
+ * Which motifs end up on the table — the second difficulty lever.
+ *
+ * The art is three animals in four poses each, so "how many pairs" is not the only
+ * thing that makes a board hard: two fawns are far harder to tell apart than a fawn
+ * and an owl. Motifs are therefore drawn one family at a time, round-robin, from a
+ * shuffled pool. A 3-pair board takes one pose from each of the three species; only
+ * once every family has been used does a second pose of the same animal appear. So an
+ * easy board is always maximally distinct and a hard one necessarily mixes poses,
+ * without either being a special case.
+ *
+ * This is still content, not rule: the level never changes "turn over two cards".
+ */
+function pickPatterns(pairs: number): PatternEntry[] {
+  const byFamily = new Map<string, PatternEntry[]>();
+  for (const family of families) {
+    byFamily.set(family, shuffle(patterns.filter((entry) => entry.family === family)));
   }
-  return items;
+
+  const order = shuffle([...families]);
+  const chosen: PatternEntry[] = [];
+  while (chosen.length < pairs) {
+    let dealt = false;
+    for (const family of order) {
+      if (chosen.length >= pairs) break;
+      const next = byFamily.get(family)?.shift();
+      if (next) {
+        chosen.push(next);
+        dealt = true;
+      }
+    }
+    // Impossible while pools.ts holds at boot, but an infinite loop is a worse way to
+    // find that out than a short board.
+    if (!dealt) break;
+  }
+  return chosen;
+}
+
+/** Fisher-Yates, in place. */
+function shuffle<T>(items: readonly T[]): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
 }
 
 export function dealBoard(difficulty: Difficulty = DEFAULT_DIFFICULTY): PublicBoardView {
   const pairs = PAIRS_BY_DIFFICULTY[difficulty];
   const { columns, rows } = GRID_BY_DIFFICULTY[difficulty];
 
-  // Pick which motifs are on the table before deciding where they land, so the same
-  // level never always shows the same subset of the catalogue.
-  const chosen = shuffle([...patterns]).slice(0, pairs);
+  const chosen = pickPatterns(pairs);
 
   const cards: MemoryCard[] = shuffle(
     chosen.flatMap((pattern) => [

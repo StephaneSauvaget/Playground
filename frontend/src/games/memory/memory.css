@@ -94,27 +94,30 @@
   transform: rotateY(180deg);
 }
 
+/* The card back is still drawn, not photographed: one shape for every card, so back
+   and front differ by colour AND by silhouette even with the flip animation off. */
 .motif {
-  width: 62%;
-  height: 62%;
+  width: 54%;
+  height: 54%;
   fill: none;
-  stroke: var(--primary-strong);
+  stroke: var(--primary-foreground);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.card-back .motif {
-  stroke: var(--primary-foreground);
   opacity: 0.55;
 }
 
 .motif .filled {
-  fill: var(--primary-strong);
+  fill: var(--primary-foreground);
 }
 
-.card-back .motif .filled {
-  fill: var(--primary-foreground);
+/* The animals are cut out with transparency, so they sit straight on the card with
+   no frame of their own. `contain` because the poses have very different aspect
+   ratios — a standing rabbit is tall, a sleeping fawn is wide. */
+.motif-art {
+  width: 94%;
+  height: 94%;
+  object-fit: contain;
 }
 
 /* The pair is found: it stays open, and says so in green rather than with a number. */

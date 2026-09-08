@@ -1,5 +1,14 @@
-import type { PatternEntry } from "../data/patterns.js";
 import type { Difficulty } from "./difficulty.js";
+
+/**
+ * What the client needs to know about a motif: which one it is, and how to name it
+ * out loud. `family` stays server-side — it decides which motifs are dealt together
+ * (memory/deal.ts) and means nothing once the board exists.
+ */
+export interface PublicPattern {
+  id: string;
+  altKey: string;
+}
 
 export interface MemoryCard {
   /** Opaque and unique within a board; the frontend uses it as its React key. */
@@ -21,6 +30,6 @@ export interface PublicBoardView {
   pairs: number;
   columns: number;
   rows: number;
-  patterns: PatternEntry[];
+  patterns: PublicPattern[];
   cards: MemoryCard[];
 }

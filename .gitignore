@@ -11,3 +11,6 @@ design/Clomo/detoure/
 
 # Captures de comparaison visuelle : régénérables en relançant l'app, ~2,8 Mo
 design/captures/
+
+# Sortie régénérable de design/memory/decoupe.mjs
+design/memory/detoure/
