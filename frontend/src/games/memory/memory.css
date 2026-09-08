@@ -1,0 +1,208 @@
+/* Memory's own styles. Anything shared with another game lives in games/games.css;
+   this file only knows about a board of cards. */
+
+.memory-game {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 20px;
+}
+
+.memory-game .container {
+  position: relative;
+  width: 850px;
+  max-width: 100%;
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: 8px 8px 0 0 var(--shadow-color);
+}
+
+.memory-game h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-strong);
+}
+
+/* --- The board ---------------------------------------------------------
+   `--columns` is set inline from what the server sent, so three levels don't
+   mean three near-identical rules. Cards keep a 1:1 ratio and shrink to fit,
+   which is what keeps the hardest board on a landscape tablet without scrolling. */
+
+.memory-board {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: calc(var(--columns) * 118px);
+}
+
+.memory-card {
+  /* Never below the 88px the workshop set as the smallest comfortable finger target. */
+  min-width: 88px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  perspective: 700px;
+}
+
+.card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+
+.memory-card.face-up .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--border);
+  border-radius: var(--radius-md);
+  backface-visibility: hidden;
+  box-shadow: 5px 5px 0 0 var(--shadow-color);
+}
+
+/* Back and front differ by colour AND by shape, so the card still reads when the
+   flip animation is switched off. */
+.card-back {
+  background: var(--primary);
+}
+
+.card-front {
+  background: var(--card);
+  transform: rotateY(180deg);
+}
+
+.motif {
+  width: 62%;
+  height: 62%;
+  fill: none;
+  stroke: var(--primary-strong);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card-back .motif {
+  stroke: var(--primary-foreground);
+  opacity: 0.55;
+}
+
+.motif .filled {
+  fill: var(--primary-strong);
+}
+
+.card-back .motif .filled {
+  fill: var(--primary-foreground);
+}
+
+/* The pair is found: it stays open, and says so in green rather than with a number. */
+.memory-card.matched .card-front {
+  border-color: var(--success);
+  background: var(--secondary);
+}
+
+.memory-card:not(.face-up):hover .card-inner {
+  transform: translate(-1px, -1px);
+}
+
+.memory-card:not(.face-up):active .card-inner {
+  transform: translate(2px, 2px);
+}
+
+.memory-card:not(.face-up):active .card-face {
+  box-shadow: 1px 1px 0 0 var(--shadow-color);
+}
+
+/* --- Pairs found -------------------------------------------------------- */
+
+.pair-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.pair-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--card);
+  transition: background 0.2s ease;
+}
+
+.pair-dot.found {
+  background: var(--success);
+}
+
+/* --- The difficulty preview: the board, in miniature --------------------- */
+
+.mini-board {
+  display: grid;
+  grid-template-columns: repeat(var(--columns), 1fr);
+  gap: 3px;
+  /* Fixed footprint whatever the level: the picker slot is bottom-aligned, so a
+     4-row preview would otherwise push "Difficile" lower than "Facile". */
+  min-height: 45px;
+  align-content: center;
+}
+
+.mini-card {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  background: var(--primary);
+  border: 1px solid var(--primary-strong);
+}
+
+.memory-win-clomo {
+  margin: -6px auto 2px;
+}
+
+.memory-icon {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 560px) {
+  .memory-game .container {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+
+  .memory-board {
+    gap: 10px;
+  }
+
+  .memory-card {
+    min-width: 0;
+  }
+}
+
+/* The flip is decoration; the state is carried by colour, shape and the aria-label. */
+@media (prefers-reduced-motion: reduce) {
+  .card-inner,
+  .pair-dot {
+    transition: none;
+  }
+}

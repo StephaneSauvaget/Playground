@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../../i18n/I18nContext";
 import type { TranslationKey } from "../../i18n/translations";
@@ -13,6 +13,7 @@ import { RulesModal } from "./RulesModal";
 import { WordDisplay } from "./WordDisplay";
 import { useRules } from "../../mascot/useRules";
 import { useHangmanRound } from "./useHangmanRound";
+import "../games.css";
 import "./hangman.css";
 
 const DIFFICULTY_HELP: Record<Difficulty, TranslationKey> = {
@@ -20,6 +21,28 @@ const DIFFICULTY_HELP: Record<Difficulty, TranslationKey> = {
   normal: "hangman.difficulty.normal.help",
   hard: "hangman.difficulty.hard.help",
 };
+
+// The whole point of the preview: a 6-year-old can't read "long words with lots of
+// different letters", but they can see that one row of dashes is longer than another.
+// It is also literally what the game screen will show them next — which is why it is
+// Hangman's business and not the picker's.
+const PREVIEW_DASHES: Record<Difficulty, number> = { easy: 3, normal: 5, hard: 8 };
+
+const DIFFICULTY_PREVIEWS: Record<Difficulty, ReactNode> = {
+  easy: <Dashes count={PREVIEW_DASHES.easy} />,
+  normal: <Dashes count={PREVIEW_DASHES.normal} />,
+  hard: <Dashes count={PREVIEW_DASHES.hard} />,
+};
+
+function Dashes({ count }: { count: number }) {
+  return (
+    <>
+      {Array.from({ length: count }, (_, i) => (
+        <span key={i} className="difficulty-dash" />
+      ))}
+    </>
+  );
+}
 
 export function Hangman() {
   const { t } = useI18n();
@@ -51,7 +74,12 @@ export function Hangman() {
             <HangmanFigure wrongGuesses={3} />
             <h1>{t("hangman.title")}</h1>
           </div>
-          <DifficultyPicker current={lastChoice} helpKeys={DIFFICULTY_HELP} onSelect={choose} />
+          <DifficultyPicker
+            current={lastChoice}
+            helpKeys={DIFFICULTY_HELP}
+            previews={DIFFICULTY_PREVIEWS}
+            onSelect={choose}
+          />
         </div>
         {rulesOpen && <RulesModal onStart={closeRules} />}
       </div>

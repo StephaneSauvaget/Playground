@@ -7,46 +7,6 @@
   padding: 20px;
 }
 
-.top-left-controls {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  gap: 10px;
-  z-index: 20;
-}
-
-.back-home-link,
-.rules-button {
-  /* <button> inherits neither font nor size — say it, or it falls back to the UA's */
-  font-family: inherit;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 10px 18px;
-  border-radius: 999px;
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1.5px solid var(--border);
-  text-decoration: none;
-  font-weight: 700;
-  box-shadow: 3px 3px 0 0 var(--shadow-color);
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
-
-.back-home-link:hover,
-.rules-button:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 0 var(--shadow-color);
-}
-
-.back-home-link:active,
-.rules-button:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 0 var(--shadow-color);
-}
-
 .hangman-game .container {
   position: relative;
   width: 850px;
@@ -280,183 +240,22 @@
   background: var(--destructive);
 }
 
-.game-modal {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(62, 39, 35, 0.3);
-}
-
-.game-modal .content {
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1.5px solid var(--border);
-  max-width: 420px;
-  width: 90%;
-  text-align: center;
-  border-radius: var(--radius-lg);
-  padding: 30px;
-  box-shadow: 6px 6px 0 0 var(--shadow-color);
-}
-
+/* Hangman's own end-of-round mascot; the modal shell itself is site-level
+   (games/games.css), because ClomoRules uses it too. */
 .game-over-clomo {
   margin: -6px auto 2px;
 }
 
-.game-modal .content b {
-  color: var(--primary-strong);
-}
-
-.game-modal h4 {
-  font-size: 1.6rem;
-  font-weight: 800;
-}
-
-.game-modal .play-again {
-  margin-top: 20px;
-  padding: 14px 28px;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  font-weight: 700;
-  font-size: 1.1rem;
-  cursor: pointer;
-  box-shadow: 3px 3px 0 0 var(--shadow-color);
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
-
-.game-modal .play-again:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 0 var(--shadow-color);
-}
-
-.game-modal .play-again:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 0 var(--shadow-color);
-}
-
-.error {
-  color: var(--destructive);
-  font-weight: 600;
-}
-
-/* --- Difficulty picker -------------------------------------------------
-   Lives in hangman.css for now because Hangman is its only caller; move it
-   out (with DifficultyPicker.tsx) the day game #2 imports the component. */
-
-.difficulty-picker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  margin-top: 8px;
-}
-
-.difficulty-picker h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--card-foreground);
-}
-
-.difficulty-options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.difficulty-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  width: 200px;
-  min-height: 190px;
-  padding: 22px 18px;
-  background: var(--card);
-  border: 3px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: 6px 6px 0 0 var(--shadow-color);
-  cursor: pointer;
-  transition:
-    transform 0.1s ease,
-    box-shadow 0.1s ease;
-}
-
-.difficulty-option:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 7px 7px 0 0 var(--shadow-color);
-}
-
-.difficulty-option:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0 0 0 0 var(--shadow-color);
-}
-
-/* The previous pick, so the child recognises it instead of choosing from scratch. */
-.difficulty-option[aria-current="true"] {
-  background: var(--primary);
-  border-color: var(--primary-strong);
-}
-
-/* Full opacity on amber: the dimmed help text lands at 4.47:1 there, under the AA
-   floor. It clears 6.2:1 on the white cards, so only this one needs the override. */
-.difficulty-option[aria-current="true"] .difficulty-help {
-  opacity: 1;
-}
-
-.difficulty-preview {
-  display: flex;
-  gap: 5px;
-  align-items: flex-end;
-  min-height: 26px;
-}
+/* --- Hangman's own difficulty preview ---------------------------------
+   The picker itself is site-level (games/games.css); this is only what Hangman
+   draws inside it: a row of dashes, i.e. literally the screen the child gets next.
+   Game #2 fills the same slot with something else. */
 
 .difficulty-dash {
   width: 14px;
   height: 4px;
   border-radius: 2px;
   background: var(--primary-strong);
-}
-
-.difficulty-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--card-foreground);
-}
-
-.difficulty-help {
-  font-size: 0.95rem;
-  line-height: 1.3;
-  color: var(--card-foreground);
-  opacity: 0.75;
-}
-
-@media (max-width: 560px) {
-  .difficulty-option {
-    width: 100%;
-    max-width: 320px;
-    min-height: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .difficulty-help {
-    flex-basis: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .difficulty-option {
-    transition: none;
-  }
 }
 
 /* The definition on the end-of-round card: the word is the answer, this is what the

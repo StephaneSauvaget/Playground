@@ -90,13 +90,17 @@
 
 .game-card-description {
   margin-top: 8px;
+  margin-bottom: 20px;
   font-size: 1rem;
   font-weight: 500;
   color: var(--card-foreground);
 }
 
 .game-card-play {
-  margin-top: 20px;
+  /* auto, not a fixed gap: descriptions differ in length from one game to the next,
+     and the buttons must still line up across the row. The gap above is carried by
+     the description's own margin-bottom. */
+  margin-top: auto;
   padding: 10px 26px;
   border-radius: 999px;
   background: var(--primary);
