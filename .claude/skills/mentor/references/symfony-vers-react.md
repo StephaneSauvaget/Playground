@@ -193,3 +193,55 @@ l'espérer.
 listé à la main dans le layout. Elle ment sur un point : ici rien ne vérifie qu'une
 classe est définie. Une règle manquante ne lève rien — ça ne se voit qu'à l'écran,
 d'où la capture systématique après tout déplacement de CSS.
+
+## `useReducer` : sortir la règle du composant (vu sur le Memory)
+
+Le Pendu garde son état dans des `useState` et laisse le serveur arbitrer. Le Memory
+ne peut pas : le serveur distribue puis oublie, donc la règle du jeu est côté client.
+Elle vit dans `games/memory/memoryEngine.ts`, une fonction **pure** :
+
+```ts
+export function reduce(state: BoardState, event: BoardEvent): BoardState
+```
+
+et le composant ne fait plus que l'appeler :
+
+```ts
+const [state, dispatch] = useReducer(reduce, initialState([]));
+dispatch({ type: "flip", cardId });
+```
+
+**Le concept :** `useReducer` est l'autre façon de tenir de l'état, à côté de
+`useState`. Au lieu d'écrire « voici la nouvelle valeur », on envoie un **événement** et
+c'est une fonction séparée qui décide de la conséquence. React garde la valeur, appelle
+la fonction, et re-rend.
+
+**L'analogie Symfony :** un Message + son Handler. `dispatch` est le bus, `reduce` le
+handler, `BoardEvent` le message. Comme dans Messenger, l'intérêt n'est pas le
+découplage pour lui-même : c'est que le handler se teste sans rien démarrer.
+
+**Où l'analogie ment :** un handler Symfony a le droit d'écrire en base, d'appeler un
+service, de logger. `reduce` **n'a le droit de rien** — pas de `fetch`, pas de
+`Date.now()`, pas de `Math.random()`, pas de `setTimeout`. React peut l'appeler deux
+fois avec les mêmes arguments (c'est ce que fait `StrictMode` en développement) et doit
+obtenir exactement le même résultat. D'où la forme du reste : le mélange des cartes est
+fait par le serveur, et le minuteur qui referme une paire ratée est **hors** du
+réducteur — il ne fait que `dispatch({ type: "hideMismatch" })` le moment venu.
+
+**Le type union discriminé.** `BoardEvent` est
+`{type:"reset";…} | {type:"flip";…} | {type:"hideMismatch"}`. Dans le `switch`,
+TypeScript sait que dans la branche `"flip"` il existe un `cardId`, et pas ailleurs.
+C'est ce qui remplace ici l'interface + les classes de messages de Messenger, sans
+écrire une classe par événement.
+
+**L'alternative écartée :** tout garder dans le composant, avec un `useState` par
+morceau (`selection`, `matched`, `phase`) et la règle éparpillée dans les gestionnaires
+de clic. C'est plus court à écrire et c'est le bug classique du Memory : trois sources
+de vérité qui se désynchronisent après une série de tapes rapides, sans que rien ne
+s'affiche de travers.
+
+**Un piège de rendu, au passage.** `isWon` et « cette carte est-elle face visible ? »
+ne sont **pas** stockés : ils se recalculent à partir de `matched` et `selection` au
+moment du rendu. Une valeur dérivée qu'on stocke est une valeur qui peut mentir ; c'est
+la même leçon que la section « Dériver pendant le rendu plutôt que corriger dans un
+effet » plus haut, appliquée à autre chose qu'un effet.
